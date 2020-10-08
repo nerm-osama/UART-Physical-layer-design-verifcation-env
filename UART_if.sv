@@ -12,13 +12,16 @@ logic parity_error;
 logic stop_error;
 logic data_ready;
 
+clocking cb @(posedge clk);
+default input #2 output #2;
+endclocking
 
-modport driver (
+modport driver (clocking cb,
 input clk,
 output tx_en,rx_en,reset,rx,data_in
 );
 
-modport monitor(
+modport monitor(clocking cb,
 input tx_en,rx_en,reset,clk,tx,rx,data_in,data_out,parity_error,stop_error,data_ready
 );
 
