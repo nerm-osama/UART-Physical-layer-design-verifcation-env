@@ -2,6 +2,7 @@
 `define MONITOR_H_
 `include "UART_if.sv"
 `include "frame.sv"
+`timescale 1us / 1ns
 class monitor;
 virtual UART_if.monitor uart_if;
 mailbox mbx_monitor_scoreboard;
@@ -14,7 +15,7 @@ endfunction
 task run();
 $display("T=%0t [Monitor] starting .... ",$time);
 forever begin 
-	@(posedge uart_if.clk);
+	@(posedge uart_if.cb);
 	if(uart_if.cb.data_ready) begin
 	
 		frame item1 =new();
@@ -34,25 +35,19 @@ forever begin
 		frame item2 =new();
 		item2.transaction_type=transmit;
 	
-		repeat(10)@(posedge uart_if.clk);
+		repeat(10)@(posedge uart_if.cb);
 
 		for(int i=0;i<8;i++)begin
-			repeat(20)@(posedge uart_if.clk);
+			repeat(20)@(posedge uart_if.cb);
 			item2.data[i]=uart_if.cb.tx;
 		end
 
-		repeat(20)@(posedge uart_if.clk);
+		repeat(20)@(posedge uart_if.cb);
 		item2.parity=uart_if.cb.tx;
 	
 		mbx_monitor_scoreboard.put(item2);
 		item2.print("Monitor");
 	end
-
-	
-	
-	
-	
-
 end 
 
 endtask

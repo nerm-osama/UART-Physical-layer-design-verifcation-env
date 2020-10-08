@@ -1,7 +1,7 @@
 `ifndef GENERATOR_H_
-`timescale 1us / 1ns
 `define GENERATOR_H_
 `include "frame.sv"
+`timescale 1us / 1ns
 class generator;
 integer loop=10;
 mailbox mailbox_generator_diver;

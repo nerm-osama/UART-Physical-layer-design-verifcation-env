@@ -1,7 +1,7 @@
 `ifndef SCORE_BOARD_H_
 `define SCORE_BOARD_H_
 `include "frame.sv"
-
+`timescale 1us / 1ns
 class scoreboard;
 mailbox mbx_drv_scb;
 mailbox mbx_mon_scb;

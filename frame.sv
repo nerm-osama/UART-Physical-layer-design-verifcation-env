@@ -1,6 +1,7 @@
 `ifndef FRAME_H_
 `define FRAME_H_
 `include"macros.sv" 
+`timescale 1us / 1ns
 class frame;
 rand bit [7:0] data;
 rand bit parity;

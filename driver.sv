@@ -1,9 +1,9 @@
-`timescale 1us / 1ns
+
 `ifndef DRIVER_H_
 `define DRIVER_H_
 `include "UART_if.sv"
 `include "frame.sv"
-
+`timescale 1us / 1ns
 class driver ;
 virtual UART_if.driver uart_if;
 mailbox mailbox_generator_driver;
@@ -17,11 +17,11 @@ endfunction
 
 task run();
 	$display ("T=%0t [Driver] starting .... ",$time);
-
-	uart_if.cb.reset=0;
-	repeat(5) @(posedge uart_if.clk);
-	uart_if.cb.reset=1;
-	uart_if.cb.rx=1;
+	
+	uart_if.cb.reset<=0;
+	repeat(5) @( uart_if.cb);
+	uart_if.cb.reset<=1;
+	uart_if.cb.rx<=1;
 	
 	forever begin
 
@@ -30,15 +30,15 @@ task run();
 		mailbox_scoreboard_driver.put(item);
 		item.print("Driver");
 		
-		@(posedge uart_if.clk);
+		@(posedge uart_if.cb);
 		
 		if(item.transaction_type==transmit)begin
 			uart_if.cb.tx_en<=1;
 			uart_if.cb.data_in<=item.data;
-			@(posedge uart_if.clk);
+			@(posedge uart_if.cb);
 			uart_if.cb.tx_en<=0;
 			uart_if.cb.data_in<=8'b0;
-			repeat(240)@(posedge uart_if.clk);
+			repeat(240)@(posedge uart_if.cb);
 		end
 		
 		else if(item.transaction_type==recieve)begin
@@ -46,17 +46,17 @@ task run();
 			uart_if.cb.rx<=0;	//start bit
 			
 			for(int i=0;i<8;i++)begin
-				repeat(20)@(posedge uart_if.clk);
+				repeat(20)@(posedge uart_if.cb);
 				uart_if.cb.rx<=item.data[i];
 			end
 
-			repeat(20)@(posedge uart_if.clk);
+			repeat(20)@(posedge uart_if.cb);
 			uart_if.cb.rx<=item.parity; 
 
-			repeat(20)@(posedge uart_if.clk);
+			repeat(20)@(posedge uart_if.cb);
 			uart_if.cb.rx<=1;	//stop bit
 			uart_if.cb.rx_en<=0;
-			repeat(20)@(posedge uart_if.clk);	
+			repeat(20)@(posedge uart_if.cb);	
 		end
 	end
 
