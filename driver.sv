@@ -30,7 +30,7 @@ task run();
 		mailbox_scoreboard_driver.put(item);
 		item.print("Driver");
 		
-		//@(posedge uart_if.clk);
+		@(posedge uart_if.clk);
 		
 		if(item.transaction_type==transmit)begin
 			uart_if.tx_en<=1;
