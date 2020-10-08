@@ -3,8 +3,9 @@
 `include "driver.sv"
 `include "monitor.sv"
 `include "scoreboard.sv"
+`include "macros.sv"
 module top_test;
-
+parameter no_of_test_cases =10;
 reg clk;
 UART_if inf(clk);
 mailbox    mbx_gen_drv;
@@ -34,7 +35,7 @@ initial begin
 	mbx_mon_scb = new();
 	mbx_drv_scb = new();
 
-	gen = new(mbx_gen_drv,10);	
+	gen = new(mbx_gen_drv,no_of_test_cases);	
 	drv = new(mbx_gen_drv,mbx_drv_scb,inf.driver);
 	mon = new(mbx_mon_scb,inf.monitor);
 	scb = new(mbx_drv_scb,mbx_mon_scb);

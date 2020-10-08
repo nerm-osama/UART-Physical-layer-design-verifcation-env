@@ -5,11 +5,11 @@
 `include "frame.sv"
 
 class driver ;
-virtual UART_if uart_if;
+virtual UART_if.driver uart_if;
 mailbox mailbox_generator_driver;
 mailbox mailbox_scoreboard_driver;
 
-function new(mailbox _mailbox_generator_driver,mailbox mailbox_scoreboard_driver,virtual UART_if _uart_if);
+function new(mailbox _mailbox_generator_driver,mailbox mailbox_scoreboard_driver,virtual UART_if.driver _uart_if);
 	this.mailbox_generator_driver=_mailbox_generator_driver;
 	this.mailbox_scoreboard_driver=mailbox_scoreboard_driver;
 	this.uart_if=_uart_if;
@@ -30,7 +30,7 @@ task run();
 		mailbox_scoreboard_driver.put(item);
 		item.print("Driver");
 		
-		@(posedge uart_if.clk);
+		//@(posedge uart_if.clk);
 		
 		if(item.transaction_type==transmit)begin
 			uart_if.tx_en<=1;

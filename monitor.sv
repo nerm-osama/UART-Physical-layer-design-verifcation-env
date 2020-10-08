@@ -3,10 +3,10 @@
 `include "UART_if.sv"
 `include "frame.sv"
 class monitor;
-virtual UART_if uart_if;
+virtual UART_if.monitor uart_if;
 mailbox mbx_monitor_scoreboard;
 
-function new(mailbox mbx_monitor_scoreboard,virtual UART_if uart_if);
+function new(mailbox mbx_monitor_scoreboard,virtual UART_if.monitor uart_if);
 	this.mbx_monitor_scoreboard=mbx_monitor_scoreboard;
 	this.uart_if=uart_if;
 endfunction

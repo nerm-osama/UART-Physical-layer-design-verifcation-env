@@ -12,9 +12,6 @@ logic parity_error;
 logic stop_error;
 logic data_ready;
 
-clocking c @(posedge(clk));
-default input #2 output #2;
-endclocking
 
 modport driver (
 input clk,
