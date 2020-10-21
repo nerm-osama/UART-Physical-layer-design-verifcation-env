@@ -44,7 +44,8 @@ task run();
 		else if(item.transaction_type==recieve)begin
 			uart_if.cb.rx_en<=1;
 			uart_if.cb.rx<=0;	//start bit
-			
+			@(negedge uart_if.clk);
+			uart_if.cb.rx_en<=0;
 			for(int i=0;i<8;i++)begin
 				repeat(20)@(posedge uart_if.cb);
 				uart_if.cb.rx<=item.data[i];

@@ -19,7 +19,17 @@ constraint parity_on_transmit_const{
 
 function void print(string source="");
 	$display("T=%0t %s data=0x%0h parity=%d transaction=%s",$time,source,data,parity,transaction_type.name); 
+
+
 endfunction 
 
+covergroup frame_g;
+coverpoint transaction_type  
+{
+bins transmit_bin = {transmit};
+bins recieve_bin = {recieve};
+}
+
+endgroup 
 endclass
 `endif

@@ -29,6 +29,19 @@ UART u1(.tx_en		(inf.tx_en),
 	.data_ready	(inf.data_ready)
 	);
 
+bind u1 UART_ASSERTION asser_uart(
+	.tx_en		(inf.tx_en),
+	.rx_en		(inf.rx_en),
+	.reset		(inf.reset),
+	.clock		(inf.clk),
+	.tx		(inf.tx),
+	.rx		(inf.rx),
+	.data_in	(inf.data_in),
+	.data_out	(inf.data_out),
+	.parity_error	(inf.parity_error),
+	.stop_error	(inf.stop_error),
+	.data_ready	(inf.data_ready)
+);
 initial begin
 
 	mbx_gen_drv = new();	
